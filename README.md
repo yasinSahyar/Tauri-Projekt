@@ -1,52 +1,33 @@
-# Tauri + React + Typescript
+# FaceVote AI Portfolio
 
-# FaceVote 👋🗳️
+Gesture controlled desktop portfolio application.
 
-FaceVote is a desktop application built with **Tauri + Vite + React** that uses  
-**MediaPipe Gesture Recognition** to detect hand gestures in real time via camera.
+This project was developed for the "Uudet teknologiat" course at Metropolia UAS.
 
-## 🚀 Features
-- Hand gesture recognition
+## Features
+
+- Hand gesture navigation using MediaPipe
+- Desktop application built with Tauri
+- Portfolio pages (About, Skills, Projects, Contact)
 - Real-time camera input
-- Lightweight and fast Tauri desktop app
-- Modern frontend with Vite + React
+- Modern React + TypeScript frontend
 
-## 🛠️ Tech Stack
-- **Tauri**
-- **Vite**
-- **React**
-- **MediaPipe Tasks Vision**
-- **TypeScript**
+## Gesture Controls
 
-## ▶️ How to Run
+Open Palm → Contact page  
+Closed Fist → Home page  
+Thumb Up → Projects page  
+Victory → Skills page  
 
-### 1️⃣ Install dependencies
+## Technologies
 
-npm install
+- React
+- TypeScript
+- Tauri
+- MediaPipe Tasks Vision
+- WebAssembly
 
-2️⃣ Run in development mode
-npm run tauri dev
+## Purpose
 
-
-The application will start and detect hand gestures using your camera.
-
-📁 Project Structure (Overview)
-src/
- ├─ hooks/
- │   └─ GestureHooks.ts
- └─ main.tsx
-src-tauri/
-
-⚠️ Notes
-
-Camera permission is required
-
-MediaPipe uses WebAssembly
-
-First build may take a bit longer
-
-
-## Recommended IDE Setup
-
-- [VS Code](https://code.visualstudio.com/) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)
-# tauri-labra-26
+The goal of this project is to explore new technologies such as
+computer vision and hybrid desktop applications.

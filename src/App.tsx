@@ -1,7 +1,8 @@
 import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
+import { useRef } from "react";
 
-import PortfolioLayout from "./components/PortfolioLayout";
 import CameraGesture from "./components/CameraGesture";
+import PortfolioLayout from "./components/PortfolioLayout";
 
 import Home from "./pages/Home";
 import About from "./pages/About";
@@ -12,32 +13,20 @@ import Contact from "./pages/Contact";
 function GestureController() {
 
   const navigate = useNavigate();
+  const lastGestureTime = useRef(0);
 
   function handleGesture(gesture: string) {
 
-    if (gesture === "Open_Palm") {
+    const now = Date.now();
 
-      navigate("/contact");
+    if (now - lastGestureTime.current < 2000) return;
 
-    }
+    lastGestureTime.current = now;
 
-    if (gesture === "Closed_Fist") {
-
-      navigate("/");
-
-    }
-
-    if (gesture === "Thumb_Up") {
-
-      navigate("/projects");
-
-    }
-
-    if (gesture === "Victory") {
-
-      navigate("/skills");
-
-    }
+    if (gesture === "Open_Palm") navigate("/contact");
+    if (gesture === "Closed_Fist") navigate("/");
+    if (gesture === "Thumb_Up") navigate("/projects");
+    if (gesture === "Victory") navigate("/skills");
 
   }
 
