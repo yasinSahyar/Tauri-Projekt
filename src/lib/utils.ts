@@ -1,6 +1,5 @@
-import { clsx, type ClassValue } from "clsx"
-import { twMerge } from "tailwind-merge"
+export function randomId() {
 
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
+  return Math.random().toString(36).substring(2);
+
 }
