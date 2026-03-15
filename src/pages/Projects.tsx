@@ -1,4 +1,5 @@
 import { DBStore } from "../stores/DBStore";
+import AIChat from "../components/AIChat";
 
 export default function Projects() {
 
@@ -13,12 +14,13 @@ export default function Projects() {
         <div key={project.name}>
 
           <h3>{project.name}</h3>
-
           <p>{project.description}</p>
 
         </div>
 
       ))}
+
+      <AIChat />
 
     </div>
 

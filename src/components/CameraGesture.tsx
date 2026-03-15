@@ -10,8 +10,8 @@ export default function CameraGesture({ onGesture }: Props) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  const gestureRecognizer = useRef<any>(null);
-  const faceDetector = useRef<any>(null);
+  const recognizerRef = useRef<any>(null);
+  const faceDetectorRef = useRef<any>(null);
 
   const lastVideoTime = useRef(-1);
 
@@ -22,8 +22,8 @@ export default function CameraGesture({ onGesture }: Props) {
 
     async function init() {
 
-      gestureRecognizer.current = await createGestureRecognizer();
-      faceDetector.current = await createFaceDetector();
+      recognizerRef.current = await createGestureRecognizer();
+      faceDetectorRef.current = await createFaceDetector();
 
       const stream = await navigator.mediaDevices.getUserMedia({ video: true });
 
@@ -42,6 +42,25 @@ export default function CameraGesture({ onGesture }: Props) {
 
     }
 
+    function drawHandLandmarks(ctx: any, landmarks: any) {
+
+      landmarks.forEach((p: any) => {
+
+        ctx.beginPath();
+        ctx.arc(
+          p.x * ctx.canvas.width,
+          p.y * ctx.canvas.height,
+          5,
+          0,
+          2 * Math.PI
+        );
+        ctx.fillStyle = "red";
+        ctx.fill();
+
+      });
+
+    }
+
     function detect() {
 
       const video = videoRef.current;
@@ -54,11 +73,7 @@ export default function CameraGesture({ onGesture }: Props) {
 
       }
 
-      if (
-        video.readyState < 2 ||
-        video.videoWidth === 0 ||
-        video.videoHeight === 0
-      ) {
+      if (video.readyState < 2) {
 
         requestAnimationFrame(detect);
         return;
@@ -78,41 +93,39 @@ export default function CameraGesture({ onGesture }: Props) {
 
         try {
 
-          const gestureResults = gestureRecognizer.current.recognizeForVideo(
+          const results = recognizerRef.current.recognizeForVideo(
             video,
             performance.now()
           );
 
-          if (gestureResults.gestures.length > 0) {
+          if (results.gestures.length > 0) {
 
-            const gesture = gestureResults.gestures[0][0].categoryName;
+            const gesture = results.gestures[0][0].categoryName;
 
             setGestureText(gesture);
+
             onGesture(gesture);
 
           }
 
-          const faceResults = faceDetector.current.detectForVideo(
+          if (results.landmarks) {
+
+            results.landmarks.forEach((hand: any) => {
+
+              drawHandLandmarks(ctx, hand);
+
+            });
+
+          }
+
+          const faces = faceDetectorRef.current.detectForVideo(
             video,
             performance.now()
           );
 
-          if (faceResults.detections.length > 0) {
+          if (faces.detections.length > 0) {
 
             setFaceDetected(true);
-
-            faceResults.detections.forEach((d: any) => {
-
-              const box = d.boundingBox;
-
-              ctx?.strokeRect(
-                box.originX,
-                box.originY,
-                box.width,
-                box.height
-              );
-
-            });
 
           } else {
 
@@ -120,9 +133,9 @@ export default function CameraGesture({ onGesture }: Props) {
 
           }
 
-        } catch (e) {
+        } catch (err) {
 
-          console.warn(e);
+          console.warn(err);
 
         }
 
@@ -140,7 +153,7 @@ export default function CameraGesture({ onGesture }: Props) {
 
     <div>
 
-      <h3>Camera AI Detection</h3>
+      <h3>AI Camera</h3>
 
       <div style={{ position: "relative", width: "400px" }}>
 
@@ -162,12 +175,14 @@ export default function CameraGesture({ onGesture }: Props) {
 
       </div>
 
-      <p><b>Detected Gesture:</b> {gestureText || "None"}</p>
+      <p>
+        <b>Gesture:</b> {gestureText || "None"}
+      </p>
 
       {faceDetected && (
 
         <p style={{ color: "green" }}>
-          👋 Hello recruiter detected
+          👋 Hello recruiter!
         </p>
 
       )}

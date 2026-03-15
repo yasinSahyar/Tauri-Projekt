@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 export const DBStore = {
 
   skills: [
@@ -12,15 +14,24 @@ export const DBStore = {
   projects: [
 
     {
-      name: "FaceVote AI Portfolio",
-      description: "Gesture controlled desktop portfolio using MediaPipe and Tauri"
+      name: "Gesture Controlled Portfolio",
+      description: "Portfolio navigated using hand gestures."
     },
 
     {
       name: "AI CV Assistant",
-      description: "Local AI assistant that answers questions about my CV"
+      description: "Local AI assistant using Ollama and Llama3."
     }
 
   ]
 
 };
+
+export function useStore() {
+
+  const [skills] = useState(DBStore.skills);
+  const [projects] = useState(DBStore.projects);
+
+  return { skills, projects };
+
+}
